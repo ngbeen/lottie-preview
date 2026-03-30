@@ -17,22 +17,37 @@
     const params = new URLSearchParams(window.location.search);
     const file = params.get('file');
     const bg = params.get('bg');
+    const artboard = params.get('artboard');
+    const fitParam = params.get('fit') || 'contain';
+
+    const fitMap = {
+      contain: rive.Fit.Contain,
+      cover: rive.Fit.Cover,
+      fitWidth: rive.Fit.FitWidth,
+      fitHeight: rive.Fit.FitHeight,
+      fill: rive.Fit.Fill,
+      none: rive.Fit.None
+    };
+    const fit = fitMap[fitParam] || rive.Fit.Contain;
 
     if (bg) {
       document.body.style.background = bg.startsWith('#') ? bg : '#' + bg;
     }
 
     if (file) {
-      new rive.Rive({
+      const config = {
         src: file,
         canvas: document.getElementById('rive-canvas'),
         autoplay: true,
+        fit: fit,
         onLoadError: () => {
           document.getElementById('rive-canvas').style.display = 'none';
           document.getElementById('error').style.display = 'block';
           document.getElementById('error').innerText = '파일을 불러올 수 없어요: ' + file;
         }
-      });
+      };
+      if (artboard) config.artboard = artboard;
+      new rive.Rive(config);
     } else {
       document.getElementById('rive-canvas').style.display = 'none';
       document.getElementById('error').style.display = 'block';
