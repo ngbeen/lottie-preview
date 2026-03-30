@@ -16,6 +16,11 @@
   <script>
     const params = new URLSearchParams(window.location.search);
     const file = params.get('file');
+    const bg = params.get('bg');
+
+    if (bg) {
+      document.body.style.background = bg.startsWith('#') ? bg : '#' + bg;
+    }
 
     if (file) {
       lottie.loadAnimation({
