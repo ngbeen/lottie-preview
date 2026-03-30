@@ -1,36 +1,34 @@
 <!DOCTYPE html>
 <html>
-
 <head>
+  <meta charset="UTF-8">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      background: transparent;
-    }
-
-    #lottie {
-      width: 100%;
-      height: 100vh;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: transparent; overflow: hidden; }
+    #lottie { width: 100%; height: 100vh; }
+    #error { display: none; font-family: sans-serif; color: #999; text-align: center; padding-top: 40vh; font-size: 14px; }
   </style>
 </head>
-
 <body>
   <div id="lottie"></div>
+  <div id="error">파일명을 URL에 입력해주세요<br><br>예시: ?file=animation.json</div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
   <script>
-    lottie.loadAnimation({
-      container: document.getElementById('lottie'),
-      renderer: 'svg',
-      loop: true,
-      autoplay: true,
-      path: 'routine_success_check.json'
-    });
+    const params = new URLSearchParams(window.location.search);
+    const file = params.get('file');
+
+    if (file) {
+      lottie.loadAnimation({
+        container: document.getElementById('lottie'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: file
+      });
+    } else {
+      document.getElementById('lottie').style.display = 'none';
+      document.getElementById('error').style.display = 'block';
+    }
   </script>
 </body>
-
 </html>
