@@ -18,6 +18,7 @@
     const file = params.get('file');
     const bg = params.get('bg');
     const artboard = params.get('artboard');
+    const smParam = params.get('sm');
     const fitParam = params.get('fit') || 'contain';
 
     const fitMap = {
@@ -50,6 +51,14 @@
         autoplay: true,
         fit: fit,
         alignment: rive.Alignment.Center,
+        onLoad: function() {
+          const smNames = this.stateMachineNames;
+          const sm = smParam || (smNames && smNames.length > 0 ? smNames[0] : null);
+          if (sm) {
+            this.stop();
+            this.play(sm);
+          }
+        },
         onLoadError: () => {
           canvas.style.display = 'none';
           document.getElementById('error').style.display = 'block';
